@@ -3,6 +3,8 @@ package com.vantara.hitachi.piics.config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
+import com.vantara.hitachi.piics.entities.ProxySetting;
+
 @Configuration
 public class ApplicationConfig {
 	@Value("${device.org.name}")
@@ -43,6 +45,21 @@ public class ApplicationConfig {
 
 	@Value("${device.thingname}")
 	private String thingName;
+
+	@Value("${proxy.scheme}")
+	private String proxyScheme;
+
+	@Value("${proxy.host}")
+	private String proxyHost;
+
+	@Value("${proxy.port}")
+	private String proxyPort;
+
+	@Value("${proxy.username}")
+	private String proxyUsername;
+
+	@Value("${proxy.password}")
+	private String proxyPassword;
 
 	public String getOrgName() {
 		return orgName;
@@ -98,5 +115,98 @@ public class ApplicationConfig {
 
 	public void setThingName(String thingName) {
 		this.thingName = thingName;
+	}
+
+	public void setOrgName(String orgName) {
+		this.orgName = orgName;
+	}
+
+	public void setOrgId(String orgId) {
+		this.orgId = orgId;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public void setSubTenantId(String subTenantId) {
+		this.subTenantId = subTenantId;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public void setSubModel(String subModel) {
+		this.subModel = subModel;
+	}
+
+	public void setDeviceLocation(String deviceLocation) {
+		this.deviceLocation = deviceLocation;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public void setStorageSystemName(String storageSystemName) {
+		this.storageSystemName = storageSystemName;
+	}
+
+	public void setSvpIp4(String svpIp4) {
+		this.svpIp4 = svpIp4;
+	}
+
+	public void setSvpIpv6(String svpIpv6) {
+		this.svpIpv6 = svpIpv6;
+	}
+
+	public void setSecurityUuid(String securityUuid) {
+		this.securityUuid = securityUuid;
+	}
+
+	public String getProxyScheme() {
+		return proxyScheme;
+	}
+
+	public void setProxyScheme(String proxyScheme) {
+		this.proxyScheme = proxyScheme;
+	}
+
+	public String getProxyHost() {
+		return proxyHost;
+	}
+
+	public void setProxyHost(String proxyHost) {
+		this.proxyHost = proxyHost;
+	}
+
+	public String getProxyPort() {
+		return proxyPort;
+	}
+
+	public void setProxyPort(String proxyPort) {
+		this.proxyPort = proxyPort;
+	}
+
+	public String getProxyUsername() {
+		return proxyUsername;
+	}
+
+	public void setProxyUsername(String proxyUsername) {
+		this.proxyUsername = proxyUsername;
+	}
+
+	public String getProxyPassword() {
+		return proxyPassword;
+	}
+
+	public void setProxyPassword(String proxyPassword) {
+		this.proxyPassword = proxyPassword;
+	}
+
+	public ProxySetting getProxySetting() {
+		return new ProxySetting(this.proxyScheme, this.proxyHost, this.proxyPort, this.proxyUsername,
+				this.proxyPassword);
 	}
 }

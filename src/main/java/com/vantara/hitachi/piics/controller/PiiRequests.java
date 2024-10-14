@@ -33,22 +33,14 @@ public class PiiRequests {
 
 	private static ApplicationConfig applicationConfig;
 	private static DeviceEnroll deviceEnroll;
-	private static ProxySetting proxySetting;
 	private static DataSender dataSender;
 
 	@Autowired
-	public PiiRequests(ApplicationConfig applicationConfig, DeviceEnroll deviceEnroll, ProxySetting proxySetting) {
+	public PiiRequests(ApplicationConfig applicationConfig, DeviceEnroll deviceEnroll) {
 		PiiRequests.applicationConfig = applicationConfig;
 		PiiRequests.deviceEnroll = deviceEnroll;
-		PiiRequests.proxySetting = proxySetting;
 
-		proxySetting.scheme = null;
-		proxySetting.host = null;
-		proxySetting.port = null;
-		proxySetting.username = null;
-		proxySetting.password = null;
-
-		PiiRequests.dataSender = new DataSender(proxySetting);
+		PiiRequests.dataSender = new DataSender(applicationConfig.getProxySetting());
 	}
 
 	@RequestMapping(value = "/mqtt/send", method = RequestMethod.POST, consumes = "application/json")
@@ -104,10 +96,6 @@ public class PiiRequests {
 
 	public static DeviceEnroll getDeviceEnroll() {
 		return PiiRequests.deviceEnroll;
-	}
-
-	public static ProxySetting getProxySetting() {
-		return PiiRequests.proxySetting;
 	}
 
 	public static DataSender getDataSender() {

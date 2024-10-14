@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: piics
+  namespace: genai-ns
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: piics
+  template:
+    metadata:
+      labels:
+        app: piics
+    spec:
+      containers:
+      - name: piics
+        image: <your-docker-image-name>
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: piics-svc
+  namespace: genai-ns
+spec:
+  selector:
+    app: piics
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080
+  type: LoadBalancer
