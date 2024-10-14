@@ -1,6 +1,6 @@
 package com.vantara.hitachi.piics.config;
 
-import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,8 +18,9 @@ public class DeviceEnroll {
 	public static final Logger logger = Logger.getLogger(DeviceEnroll.class.toString());
 
 	private static ApplicationConfig PULSE_PROPERTIES;
-	private static String THING_NAME = "";
 	private static DeviceEnrollmentRequest request;
+	private static String THING_NAME;
+
 	private static boolean createdDeviceEnrollment = false;
 
 	public DeviceEnroll(ApplicationConfig applicationConfig) {
@@ -27,13 +28,10 @@ public class DeviceEnroll {
 	}
 
 	public static DeviceEnrollmentRequest constructExistingTestDevice() {
-		String orgName = PULSE_PROPERTIES.getOrgName();
-		String orgId = PULSE_PROPERTIES.getOrgId();
-		String registeredSerialNumber = PULSE_PROPERTIES.getSerialNumber() + ":" + orgId;
-		String registeredTenantId = orgName + ":" + orgId;
+		String registeredSerialNumber = PULSE_PROPERTIES.getSerialNumber();
 
 		Tenant tenant = new Tenant.Builder()
-				.withTenantId(registeredTenantId)
+				.withTenantId(PULSE_PROPERTIES.getTenantId())
 				.withSubTenantId(PULSE_PROPERTIES.getSubTenantId())
 				.build();
 
@@ -56,15 +54,16 @@ public class DeviceEnroll {
 	}
 
 	public static DeviceEnrollmentRequest constructTestEnrollDevice() {
-		if (createdDeviceEnrollment)
+		if (createdDeviceEnrollment) {
 			return request;
-		String serialNumber = PULSE_PROPERTIES.getSerialNumber() + ":" + PULSE_PROPERTIES.getOrgId();
-		String tenantId = PULSE_PROPERTIES.getOrgName() + ":" + PULSE_PROPERTIES.getOrgId();
+		}
 
 		Tenant tenant = new Tenant.Builder()
-				.withTenantId(tenantId)
+				.withTenantId(PULSE_PROPERTIES.getTenantId())
 				.withSubTenantId(PULSE_PROPERTIES.getSubTenantId())
 				.build();
+
+		String serialNumber = PULSE_PROPERTIES.getSerialNumber();
 
 		Device device = new Device.Builder()
 				.withDeviceId(serialNumber)
@@ -83,14 +82,10 @@ public class DeviceEnroll {
 				.withDevice(device)
 				.withUUID(java.util.UUID.fromString(PULSE_PROPERTIES.getSecurityUuid()))
 				.build();
-		setThingName(serialNumber);
 
-		HashMap<String, String> proxySettings = new HashMap<>();
-		proxySettings.put("scheme", PULSE_PROPERTIES.getProxyScheme());
-		proxySettings.put("host", PULSE_PROPERTIES.getProxyHost());
-		proxySettings.put("port", PULSE_PROPERTIES.getProxyPort());
-		proxySettings.put("username", PULSE_PROPERTIES.getProxyUsername());
-		proxySettings.put("password", PULSE_PROPERTIES.getProxyPassword());
+		DeviceEnroll.setThingName(serialNumber);
+
+		Map<String, String> proxySettings = PULSE_PROPERTIES.getProxySetting().toMap();
 
 		DeviceProvisioningService deviceProvisioningService = new DeviceProvisioningServiceImpl(serialNumber,
 				proxySettings);
@@ -101,7 +96,9 @@ public class DeviceEnroll {
 		} else {
 			logger.log(Level.SEVERE, "Device enrollment failed: " + response.getMessage());
 		}
-		createdDeviceEnrollment = Boolean.parseBoolean("true");
+
+		createdDeviceEnrollment = true;
+
 		return request;
 	}
 

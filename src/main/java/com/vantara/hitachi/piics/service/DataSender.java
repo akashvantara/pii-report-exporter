@@ -20,7 +20,6 @@ import com.vantara.hitachi.piics.entities.ProxySetting;
 import com.vantara.hitachi.piics.entities.ZipMetricsRequest;
 
 import java.io.IOException;
-import java.util.HashMap;
 
 import com.vantara.hitachi.piics.config.DeviceEnroll;;
 
@@ -39,10 +38,8 @@ public class DataSender {
 	private MqttMetrics mqttMetricsService;
 
 	public DataSender(ProxySetting proxySetting) {
-		// Set proxy
-		logger.info("Setting proxy!");
+		// Configure proxy settings for DataSender object
 		this.setProxySetting(proxySetting);
-		logger.info("Proxy set!");
 
 		// Initialize metrics publisher
 		logger.info("Initializing storage metrics publisher!");
@@ -72,12 +69,7 @@ public class DataSender {
 
 	public void setProxySetting(ProxySetting proxySetting) {
 		if (proxySetting != null) {
-			this.proxySettings = new HashMap<>();
-			this.proxySettings.put("scheme", proxySetting.scheme);
-			this.proxySettings.put("host", proxySetting.host);
-			this.proxySettings.put("port", proxySetting.port);
-			this.proxySettings.put("username", proxySetting.username);
-			this.proxySettings.put("password", proxySetting.password);
+			this.proxySettings = proxySetting.toMap();
 		}
 	}
 

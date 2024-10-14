@@ -1,5 +1,8 @@
 package com.vantara.hitachi.piics.entities;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProxySetting {
 	public String scheme;
 	public String host;
@@ -21,5 +24,17 @@ public class ProxySetting {
 		this.port = port;
 		this.username = username;
 		this.password = password;
+	}
+
+	public Map<String, String> toMap() {
+		Map<String, String> r = new HashMap<>();
+
+		r.put("scheme", this.scheme);
+		r.put("host", this.host);
+		r.put("port", this.port);
+		r.put("username", this.username);
+		r.put("password", this.password);
+
+		return r;
 	}
 }
