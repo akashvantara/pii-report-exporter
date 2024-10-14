@@ -2,7 +2,7 @@ package com.vantara.hitachi.piics.entities;
 
 public class PiiResponse {
 	public static final String RESPONSE_OK = "OK";
-	public static final String RESPONSE_NOTOK = "NOT_OK";
+	public static final String RESPONSE_NOT_OK = "NOT_OK";
 
 	private String status;
 

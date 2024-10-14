@@ -1,0 +1,124 @@
+{
+    "date": "2024-10-14",
+    "timestamp": "2024-10-14T09:27:11Z",
+    "capturedTimestamp": "2024-10-14T09:27:11Z",
+    "tenantId": "810020:d9878ae7-8db2-47e3-a1b1-ebd1c88a187f",
+    "serialNumber": "810020",
+    "resourceId": null,
+    "metricsType": "PII",
+    "data": [{
+            "serialNumber": "810020",
+            "CapturedTimestamp": "2024-10-11T09:07:48Z",
+            "data": [{
+                    "id": 1,
+                    "jobType": "PII_SCAN",
+                    "jobConfig": "{\"scanDepth\":5,\"scanPatterns\":[\"SSN\",\"EMAIL\"]}",
+                    "jobStartTime": 1728633600000,
+                    "jobEndTime": 1728635400000,
+                    "jobStatus": "COMPLETED",
+                    "jobComment": "Job completed successfully.",
+                    "isDeleted": false,
+                    "command": "I",
+                    "buckets": [{
+                            "id": 1,
+                            "command": "I",
+                            "bucketName": "bucket-1",
+                            "isDeleted": false,
+                            "lastScanDate": 1728633600000,
+                            "files": [{
+                                    "id": 1,
+                                    "command": "I",
+                                    "fileName": "file1.txt",
+                                    "mimeType": "text/plain",
+                                    "fileSizeMb": 1.5,
+                                    "processingTime": 0.75,
+                                    "isDeleted": false,
+                                    "totalPiiFound": 2,
+                                    "piiEntities": [{
+                                            "id": 1,
+                                            "command": "I",
+                                            "isDeleted": false,
+                                            "entityType": "SSN",
+                                            "entityText": "123-45-6789",
+                                            "entityScore": 0.98,
+                                            "start": 12,
+                                            "end": 23,
+                                            "isSensitive": true,
+                                            "analysis": "{\"confidence\":0.98}"
+                                        }, {
+                                            "id": 2,
+                                            "command": "I",
+                                            "isDeleted": false,
+                                            "entityType": "EMAIL",
+                                            "entityText": "user@example.com",
+                                            "entityScore": 0.95,
+                                            "start": 30,
+                                            "end": 46,
+                                            "isSensitive": true,
+                                            "analysis": "{\"confidence\":0.95}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "ResourceId": null,
+            "thingName": "810020:d9878ae7-8db2-47e3-a1b1-ebd1c88a187f",
+            "TenentId": "tenant-1",
+            "type": "PII"
+        }, {
+            "serialNumber": "810020",
+            "CapturedTimestamp": "2024-10-11T09:09:48Z",
+            "data": [{
+                    "id": 2,
+                    "jobType": "PII_SCAN",
+                    "jobConfig": "{\"scanDepth\":4,\"scanPatterns\":[\"SSN\",\"PHONE\"]}",
+                    "jobStartTime": 1728633900000,
+                    "jobEndTime": 1728635700000,
+                    "jobStatus": "COMPLETED",
+                    "jobComment": "Scan completed successfully.",
+                    "isDeleted": false,
+                    "command": "U",
+                    "buckets": [{
+                            "id": 2,
+                            "command": "U",
+                            "bucketName": "bucket-2",
+                            "isDeleted": false,
+                            "lastScanDate": 1728633900000,
+                            "files": [{
+                                    "id": 2,
+                                    "command": "U",
+                                    "fileName": "file2.txt",
+                                    "mimeType": "application/pdf",
+                                    "fileSizeMb": 2.0,
+                                    "processingTime": 1.0,
+                                    "isDeleted": false,
+                                    "totalPiiFound": 1,
+                                    "piiEntities": [{
+                                            "id": 3,
+                                            "command": "U",
+                                            "isDeleted": false,
+                                            "entityType": "PHONE",
+                                            "entityText": "+1234567890",
+                                            "entityScore": 0.92,
+                                            "start": 50,
+                                            "end": 60,
+                                            "isSensitive": true,
+                                            "analysis": "{\"confidence\":0.92}"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "ResourceId": null,
+            "thingName": "810020:d9878ae7-8db2-47e3-a1b1-ebd1c88a187f",
+            "TenentId": "tenant-2",
+            "type": "PII"
+        }
+    ]
+}

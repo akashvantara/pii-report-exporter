@@ -1,6 +1,8 @@
 package com.vantara.hitachi.piics.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 // Imported libs
 import com.hv.pc.dto.performance.MetricsReq;
+import com.hv.pc.utils.DateUtils;
 import com.vantara.hitachi.piics.config.ApplicationConfig;
 
 // Entities
@@ -43,24 +46,29 @@ public class PiiRequests {
 	}
 
 	@RequestMapping(value = "/mqtt/send", method = RequestMethod.POST, consumes = "application/json")
-	public PiiResponse sendToService(@RequestBody List<PiiRequest> request) {
+	public PiiResponse sendToService(@RequestBody PiiRequest request) {
 		String responseMessage = PiiResponse.RESPONSE_OK;
 
-		PiiRequest req = request.get(0);
+		List<Map<String, Object>> data = new ArrayList<>();
+		data.add(request.toMap());
 
-		if (req != null) {
-			MetricsReq metricsReq = req.generateMetricsReq(DataSender.GetThingName(),
-					DataSender.GetDeviceSerialNumber());
+		MetricsReq metricsReq = new MetricsReq.Builder()
+				.tenantId(DataSender.GetThingName())
+				.serialNumber(DataSender.GetDeviceSerialNumber())
+				.capturedTimestamp(DateUtils.getCurrentTimeStamp())
+				.data(data)
+				.metricsType("PII")
+				.build();
 
-			if (PiiRequests.dataSender.publishDataToMqtt(metricsReq)) {
-				logger.info(req.toString());
-				logger.info("Data published to MQTT!");
-			} else {
-				logger.log(Level.SEVERE, "Failed to publish data to MQTT, data: " + request);
-				responseMessage = PiiResponse.RESPONSE_NOTOK;
-			}
+		// MetricsReq metricsReq = req.generateMetricsReq(DataSender.GetThingName(),
+		// DataSender.GetDeviceSerialNumber());
+
+		if (PiiRequests.dataSender.publishDataToMqtt(metricsReq)) {
+			logger.info(metricsReq.toString());
+			logger.info("Data published to MQTT!");
 		} else {
-			responseMessage = PiiResponse.RESPONSE_NOTOK;
+			logger.log(Level.SEVERE, "Failed to publish data to MQTT, data: " + request);
+			responseMessage = PiiResponse.RESPONSE_NOT_OK;
 		}
 
 		PiiResponse response = new PiiResponse(responseMessage);
@@ -75,7 +83,7 @@ public class PiiRequests {
 			logger.info("Zip sent!");
 		} else {
 			logger.log(Level.SEVERE, "Failed to send zip, request: " + request);
-			responseMessage = PiiResponse.RESPONSE_NOTOK;
+			responseMessage = PiiResponse.RESPONSE_NOT_OK;
 		}
 
 		PiiResponse response = new PiiResponse(responseMessage);
