@@ -43,9 +43,6 @@ public class ApplicationConfig {
 	@Value("${device.security.uuid}")
 	private String securityUuid;
 
-	@Value("${device.thingname}")
-	private String thingName;
-
 	@Value("${proxy.scheme}")
 	private String proxyScheme;
 
@@ -107,14 +104,6 @@ public class ApplicationConfig {
 
 	public String getSecurityUuid() {
 		return securityUuid;
-	}
-
-	public String getThingName() {
-		return thingName;
-	}
-
-	public void setThingName(String thingName) {
-		this.thingName = thingName;
 	}
 
 	public void setOrgName(String orgName) {

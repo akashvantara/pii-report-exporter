@@ -55,14 +55,6 @@ public class DataSender {
 				Optional.ofNullable(ProxyUtils.getProxyForMQTT(this.proxySettings)));
 		logger.info("Pulse mqtt connection initialized!");
 
-		// Enroll device (Certs adding!? at boot)
-		// this is removed since `DeviceEnroll.java` already does it
-		/*
-		 * logger.info("Enrolling device!");
-		 * this.enrollDevice();
-		 * logger.info("Device enrolled!");
-		 */
-
 		try {
 			logger.info("Initializing pulse mqtt metrics service!");
 			this.mqttMetricsService = new MqttMetricsImpl(this.pulseMqttConnection.getConnection());
@@ -79,8 +71,8 @@ public class DataSender {
 	}
 
 	public void setProxySetting(ProxySetting proxySetting) {
-		this.proxySettings = new HashMap<>();
 		if (proxySetting != null) {
+			this.proxySettings = new HashMap<>();
 			this.proxySettings.put("scheme", proxySetting.scheme);
 			this.proxySettings.put("host", proxySetting.host);
 			this.proxySettings.put("port", proxySetting.port);
@@ -126,8 +118,6 @@ public class DataSender {
 			this.mqttMetricsService.publishMqttMetrics(request, DataSender.thingName,
 					DataSender.enrollmentRequest);
 
-			// Probably don't enable this we should not be waiting for messages
-			// this.pulseMqttConnection.waitForMessages();
 			success = true;
 		} catch (ExecutionException ee) {
 			logger.log(Level.SEVERE, "Failed to create MQTT connection or subscription, error: " + ee);

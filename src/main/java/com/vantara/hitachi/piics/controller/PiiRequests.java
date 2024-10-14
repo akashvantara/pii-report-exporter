@@ -19,7 +19,6 @@ import com.vantara.hitachi.piics.config.ApplicationConfig;
 import com.vantara.hitachi.piics.entities.PiiRequest;
 import com.vantara.hitachi.piics.entities.ZipMetricsRequest;
 import com.vantara.hitachi.piics.entities.PiiResponse;
-import com.vantara.hitachi.piics.entities.ProxySetting;
 
 // Config
 import com.vantara.hitachi.piics.config.DeviceEnroll;

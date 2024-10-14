@@ -18,6 +18,7 @@ public class DeviceEnroll {
 	public static final Logger logger = Logger.getLogger(DeviceEnroll.class.toString());
 
 	private static ApplicationConfig PULSE_PROPERTIES;
+	private static String THING_NAME = "";
 	private static DeviceEnrollmentRequest request;
 	private static boolean createdDeviceEnrollment = false;
 
@@ -83,13 +84,13 @@ public class DeviceEnroll {
 				.withUUID(java.util.UUID.fromString(PULSE_PROPERTIES.getSecurityUuid()))
 				.build();
 		setThingName(serialNumber);
+
 		HashMap<String, String> proxySettings = new HashMap<>();
-		// No Proxy
-		proxySettings.put("scheme", null);
-		proxySettings.put("host", null);
-		proxySettings.put("port", null);
-		proxySettings.put("username", null);
-		proxySettings.put("password", null);
+		proxySettings.put("scheme", PULSE_PROPERTIES.getProxyScheme());
+		proxySettings.put("host", PULSE_PROPERTIES.getProxyHost());
+		proxySettings.put("port", PULSE_PROPERTIES.getProxyPort());
+		proxySettings.put("username", PULSE_PROPERTIES.getProxyUsername());
+		proxySettings.put("password", PULSE_PROPERTIES.getProxyPassword());
 
 		DeviceProvisioningService deviceProvisioningService = new DeviceProvisioningServiceImpl(serialNumber,
 				proxySettings);
@@ -105,11 +106,11 @@ public class DeviceEnroll {
 	}
 
 	public static String getThingName() {
-		return DeviceEnroll.PULSE_PROPERTIES.getThingName();
+		return DeviceEnroll.THING_NAME;
 	}
 
 	public static void setThingName(String thingName) {
-		DeviceEnroll.PULSE_PROPERTIES.setThingName(thingName);
+		DeviceEnroll.THING_NAME = thingName;
 	}
 
 	public static Boolean getCreatedDeviceEnrollment() {
