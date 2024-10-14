@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.4</version>
+		<!-- relativePath/ --> <!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.vantara.hitachi</groupId>
+	<artifactId>piics</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>piics</name>
+	<description>Java service to send the PII data to another system</description>
+	<url/>
+	<licenses>
+		<license/>
+	</licenses>
+	<developers>
+		<developer/>
+	</developers>
+	<scm>
+		<connection/>
+		<developerConnection/>
+		<tag/>
+		<url/>
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+
+<dependencies>
+	<dependency>
+		<groupId>com.hv.pc</groupId>
+		<artifactId>pulse-connect</artifactId>
+		<version>v7</version>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-web</artifactId>
+	</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-test</artifactId>
+		<scope>test</scope>
+	</dependency>
+
+	<!-- AWS SDK v2 for IoT -->
+	<dependency>
+		<groupId>software.amazon.awssdk</groupId>
+		<artifactId>iot</artifactId>
+		<version>2.25.50</version>
+	</dependency>
+	<dependency>
+		<groupId>software.amazon.awssdk</groupId>
+		<artifactId>netty-nio-client</artifactId>
+		<version>2.26.0</version>
+	</dependency>
+	<dependency>
+		<groupId>software.amazon.awssdk.iotdevicesdk</groupId>
+		<artifactId>aws-iot-device-sdk</artifactId>
+		<version>1.20.6</version>
+	</dependency>
+
+	<!-- I don't know whether these are even required, we can remove it probably -->
+	<!-- AWS SDK v2 for S3 -->
+	<dependency>
+		<groupId>software.amazon.awssdk</groupId>
+		<artifactId>s3</artifactId>
+		<version>2.26.0</version>
+	</dependency>
+	<!-- AWS Glue dependency -->
+	<dependency>
+		<groupId>software.amazon.awssdk</groupId>
+		<artifactId>glue</artifactId>
+		<version>2.25.24</version>
+	</dependency>
+	<!-- https://mvnrepository.com/artifact/software.amazon.awssdk.crt/aws-crt -->
+	<dependency>
+		<groupId>software.amazon.awssdk.crt</groupId>
+		<artifactId>aws-crt</artifactId>
+		<version>0.29.23</version>
+	</dependency>
+	<!-- I don't know whether these are even required, we can remove it probably -->
+</dependencies>
+<build>
+        <plugins>
+		<plugin>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-maven-plugin</artifactId>
+		</plugin>
+        </plugins>
+	<pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
+	</pluginManagement>
+</build>
+</project>
