@@ -2,12 +2,8 @@
     "date": "2024-10-14",
     "timestamp": "2024-10-14T09:27:11Z",
     "capturedTimestamp": "2024-10-14T09:27:11Z",
-    "tenantId": "810020:d9878ae7-8db2-47e3-a1b1-ebd1c88a187f",
-    "serialNumber": "810020",
     "resourceId": null,
-    "metricsType": "PII",
     "data": [{
-            "serialNumber": "810020",
             "CapturedTimestamp": "2024-10-11T09:07:48Z",
             "data": [{
                     "id": 1,
@@ -64,12 +60,8 @@
                     ]
                 }
             ],
-            "ResourceId": null,
-            "thingName": "810020:d9878ae7-8db2-47e3-a1b1-ebd1c88a187f",
-            "TenentId": "tenant-1",
-            "type": "PII"
+            "ResourceId": null
         }, {
-            "serialNumber": "810020",
             "CapturedTimestamp": "2024-10-11T09:09:48Z",
             "data": [{
                     "id": 2,
@@ -115,10 +107,7 @@
                     ]
                 }
             ],
-            "ResourceId": null,
-            "thingName": "810020:d9878ae7-8db2-47e3-a1b1-ebd1c88a187f",
-            "TenentId": "tenant-2",
-            "type": "PII"
+            "ResourceId": null
         }
     ]
 }

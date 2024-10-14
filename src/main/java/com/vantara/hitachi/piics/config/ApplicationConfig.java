@@ -14,7 +14,7 @@ public class ApplicationConfig {
 	private String orgId;
 
 	@Value("${device.serial.number}")
-	private String serialNumber;
+	private String serialNo;
 
 	@Value("${device.sub.tenant.id}")
 	private String subTenantId;
@@ -58,6 +58,9 @@ public class ApplicationConfig {
 	@Value("${proxy.password}")
 	private String proxyPassword;
 
+	@Value("${metric.type}")
+	private String metricType;
+
 	public String getOrgName() {
 		return orgName;
 	}
@@ -66,8 +69,8 @@ public class ApplicationConfig {
 		return orgId;
 	}
 
-	public String getSerialNumber() {
-		return serialNumber;
+	public String getSerialNo() {
+		return serialNo;
 	}
 
 	public String getSubTenantId() {
@@ -114,8 +117,8 @@ public class ApplicationConfig {
 		this.orgId = orgId;
 	}
 
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
+	public void setSerialNo(String serialNumber) {
+		this.serialNo = serialNumber;
 	}
 
 	public void setSubTenantId(String subTenantId) {
@@ -192,6 +195,23 @@ public class ApplicationConfig {
 
 	public void setProxyPassword(String proxyPassword) {
 		this.proxyPassword = proxyPassword;
+	}
+
+	public String getMetricType() {
+		return metricType;
+	}
+
+	public void setMetricType(String metricType) {
+		this.metricType = metricType;
+	}
+
+	// Custom methods
+	public String getSerialNumber() {
+		return this.serialNo + ":" + this.orgId;
+	}
+
+	public String getTenantId() {
+		return this.orgName + ":" + this.orgId;
 	}
 
 	public ProxySetting getProxySetting() {

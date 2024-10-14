@@ -32,7 +32,7 @@ public class DataSender {
 
 	// Data sending related configuration
 	private static DeviceEnrollmentRequest enrollmentRequest = DeviceEnroll.constructTestEnrollDevice();
-	private static String thingName = DeviceEnroll.getThingName();
+	private static final String thingName = DeviceEnroll.getThingName();
 
 	private StorageMetricsPublisher storageMetricsPublisher;
 	private PulseMqttConnection pulseMqttConnection;
@@ -137,9 +137,5 @@ public class DataSender {
 
 	public static String GetThingName() {
 		return thingName;
-	}
-
-	public static String GetDeviceSerialNumber() {
-		return DataSender.enrollmentRequest.getDevice().getSerialNumber();
 	}
 }

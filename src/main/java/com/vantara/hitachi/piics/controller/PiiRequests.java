@@ -33,37 +33,25 @@ import com.vantara.hitachi.piics.service.DataSender;
 public class PiiRequests {
 	public static final Logger logger = Logger.getLogger(PiiRequests.class.toString());
 
-	private static ApplicationConfig applicationConfig;
-	private static DeviceEnroll deviceEnroll;
-	private static DataSender dataSender;
+	private static ApplicationConfig APP_CONFIG;
+	private static DeviceEnroll DEVICE_ENROLL;
+	private static DataSender DATA_SENDER;
 
 	@Autowired
 	public PiiRequests(ApplicationConfig applicationConfig, DeviceEnroll deviceEnroll) {
-		PiiRequests.applicationConfig = applicationConfig;
-		PiiRequests.deviceEnroll = deviceEnroll;
-
-		PiiRequests.dataSender = new DataSender(applicationConfig.getProxySetting());
+		PiiRequests.APP_CONFIG = applicationConfig;
+		PiiRequests.DEVICE_ENROLL = deviceEnroll;
+		PiiRequests.DATA_SENDER = new DataSender(applicationConfig.getProxySetting());
 	}
 
 	@RequestMapping(value = "/mqtt/send", method = RequestMethod.POST, consumes = "application/json")
 	public PiiResponse sendToService(@RequestBody PiiRequest request) {
 		String responseMessage = PiiResponse.RESPONSE_OK;
 
-		List<Map<String, Object>> data = new ArrayList<>();
-		data.add(request.toMap());
+		MetricsReq metricsReq = request.toMetricsReq(APP_CONFIG.getTenantId(),
+				APP_CONFIG.getSerialNumber(), DataSender.GetThingName(), APP_CONFIG.getMetricType());
 
-		MetricsReq metricsReq = new MetricsReq.Builder()
-				.tenantId(DataSender.GetThingName())
-				.serialNumber(DataSender.GetDeviceSerialNumber())
-				.capturedTimestamp(DateUtils.getCurrentTimeStamp())
-				.data(data)
-				.metricsType("PII")
-				.build();
-
-		// MetricsReq metricsReq = req.generateMetricsReq(DataSender.GetThingName(),
-		// DataSender.GetDeviceSerialNumber());
-
-		if (PiiRequests.dataSender.publishDataToMqtt(metricsReq)) {
+		if (PiiRequests.DATA_SENDER.publishDataToMqtt(metricsReq)) {
 			logger.info(metricsReq.toString());
 			logger.info("Data published to MQTT!");
 		} else {
@@ -79,7 +67,7 @@ public class PiiRequests {
 	public PiiResponse sendZipMetrics(@RequestBody ZipMetricsRequest request) {
 		String responseMessage = PiiResponse.RESPONSE_OK;
 
-		if (PiiRequests.dataSender.publishMetricsFromZipAsyncUpload(request)) {
+		if (PiiRequests.DATA_SENDER.publishMetricsFromZipAsyncUpload(request)) {
 			logger.info("Zip sent!");
 		} else {
 			logger.log(Level.SEVERE, "Failed to send zip, request: " + request);
@@ -97,15 +85,15 @@ public class PiiRequests {
 	}
 
 	// Unwanted methods to satisfy the linter and compiler
-	public static ApplicationConfig getApplicationConfig() {
-		return PiiRequests.applicationConfig;
+	public static ApplicationConfig getAPP_CONFIG() {
+		return PiiRequests.APP_CONFIG;
 	}
 
-	public static DeviceEnroll getDeviceEnroll() {
-		return PiiRequests.deviceEnroll;
+	public static DeviceEnroll getDEVICE_ENROLL() {
+		return PiiRequests.DEVICE_ENROLL;
 	}
 
-	public static DataSender getDataSender() {
-		return PiiRequests.dataSender;
+	public static DataSender getDATA_SENDER() {
+		return PiiRequests.DATA_SENDER;
 	}
 }

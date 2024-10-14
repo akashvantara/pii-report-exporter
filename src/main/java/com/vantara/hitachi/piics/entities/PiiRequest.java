@@ -53,33 +53,24 @@ public class PiiRequest {
 		return entry;
 	}
 
-	public MetricsReq generateMetricsReq(String thingName, String serialNumber) {
-		List<Map<String, Object>> dataToSend = new ArrayList<>();
-
-		Map<String, Object> entry = new HashMap<>();
-		entry.put("date", this.date);
-		entry.put("timestamp", this.timestamp);
-		entry.put("capturedTimestamp", this.capturedTimestamp);
-		entry.put("tenantId", this.tenantId);
-		entry.put("serialNumber", this.serialNumber);
-		entry.put("resourceId", this.resourceId);
-		entry.put("metricsType", this.metricsType);
+	public MetricsReq toMetricsReq(String tenantId, String serialNumber, String thingName, String metricType) {
+		this.setTenantId(tenantId);
+		this.setSerialNumber(serialNumber);
+		this.setThingName(thingName);
+		this.setMetricsType(metricType);
 
 		List<Map<String, Object>> data = new ArrayList<>();
+		data.add(this.toMap());
 
-		for (PiiInnerData pid : this.data) {
-			data.add(pid.toMap());
-		}
-
-		entry.put("data", data);
-
-		return new MetricsReq.Builder()
-				.tenantId(thingName)
+		MetricsReq metricsReq = new MetricsReq.Builder()
+				.tenantId(tenantId)
 				.serialNumber(serialNumber)
 				.capturedTimestamp(DateUtils.getCurrentTimeStamp())
-				.data(dataToSend)
-				.metricsType("PII")
+				.data(data)
+				.metricsType(metricType)
 				.build();
+
+		return metricsReq;
 	}
 
 	public String getDate() {
@@ -112,6 +103,10 @@ public class PiiRequest {
 
 	public void setTenantId(String tenantId) {
 		this.tenantId = tenantId;
+
+		for (PiiInnerData pid : this.data) {
+			pid.setTenentId(tenantId);
+		}
 	}
 
 	public String getSerialNumber() {
@@ -120,6 +115,10 @@ public class PiiRequest {
 
 	public void setSerialNumber(String serialNumber) {
 		this.serialNumber = serialNumber;
+
+		for (PiiInnerData pid : this.data) {
+			pid.setSerialNumber(serialNumber);
+		}
 	}
 
 	public String getResourceId() {
@@ -136,6 +135,11 @@ public class PiiRequest {
 
 	public void setMetricsType(String metricsType) {
 		this.metricsType = metricsType;
+
+		for (PiiInnerData pid : this.data) {
+			pid.setType(metricsType);
+		}
+
 	}
 
 	public List<PiiInnerData> getData() {
@@ -145,11 +149,21 @@ public class PiiRequest {
 	public void setData(List<PiiInnerData> data) {
 		this.data = data;
 	}
+
+	public void setThingName(String thingName) {
+		for (PiiInnerData pid : this.data) {
+			pid.setThingName(thingName);
+		}
+	}
 }
 
 class PiiInnerData {
 	private String serialNumber;
 	private Timestamp CapturedTimestamp;
+	private String ResourceId;
+	private String thingName;
+	private String TenentId;
+	private String type;
 	private List<ScanReportRequest> data;
 
 	public PiiInnerData(
@@ -159,35 +173,15 @@ class PiiInnerData {
 		this.data = data;
 	}
 
-	public String getSerialNumber() {
-		return serialNumber;
-	}
-
-	public Timestamp getCapturedTimestamp() {
-		return CapturedTimestamp;
-	}
-
-	public List<ScanReportRequest> getData() {
-		return data;
-	}
-
-	public void setSerialNumber(String serialNumber) {
-		this.serialNumber = serialNumber;
-	}
-
-	public void setCapturedTimestamp(Timestamp capturedTimestamp) {
-		CapturedTimestamp = capturedTimestamp;
-	}
-
-	public void setData(List<ScanReportRequest> data) {
-		this.data = data;
-	}
-
 	public Map<String, Object> toMap() {
 		Map<String, Object> r = new HashMap<>();
 
 		r.put("serialNumber", serialNumber);
 		r.put("CapturedTimestamp", CapturedTimestamp);
+		r.put("ResourceId", ResourceId);
+		r.put("thingName", thingName);
+		r.put("TenentId", TenentId);
+		r.put("type", type);
 
 		List<Map<String, Object>> buckets = new ArrayList<>();
 
@@ -200,6 +194,61 @@ class PiiInnerData {
 		return r;
 	}
 
+	public String getSerialNumber() {
+		return serialNumber;
+	}
+
+	public void setSerialNumber(String serialNumber) {
+		this.serialNumber = serialNumber;
+	}
+
+	public Timestamp getCapturedTimestamp() {
+		return CapturedTimestamp;
+	}
+
+	public void setCapturedTimestamp(Timestamp capturedTimestamp) {
+		CapturedTimestamp = capturedTimestamp;
+	}
+
+	public List<ScanReportRequest> getData() {
+		return data;
+	}
+
+	public void setData(List<ScanReportRequest> data) {
+		this.data = data;
+	}
+
+	public String getResourceId() {
+		return ResourceId;
+	}
+
+	public void setResourceId(String resourceId) {
+		ResourceId = resourceId;
+	}
+
+	public String getThingName() {
+		return thingName;
+	}
+
+	public void setThingName(String thingName) {
+		this.thingName = thingName;
+	}
+
+	public String getTenentId() {
+		return TenentId;
+	}
+
+	public void setTenentId(String tenentId) {
+		TenentId = tenentId;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 }
 
 class ScanReportRequest {
@@ -333,6 +382,7 @@ class ScanReportRequest {
 	public void setBuckets(List<BucketRequest> buckets) {
 		this.buckets = buckets;
 	}
+
 }
 
 class BucketRequest {
@@ -382,14 +432,6 @@ class BucketRequest {
 		this.id = id;
 	}
 
-	public String getCommand() {
-		return command;
-	}
-
-	public void setCommand(String command) {
-		this.command = command;
-	}
-
 	public String getBucketName() {
 		return bucketName;
 	}
@@ -412,6 +454,14 @@ class BucketRequest {
 
 	public void setLastScanDate(Timestamp lastScanDate) {
 		this.lastScanDate = lastScanDate;
+	}
+
+	public String getCommand() {
+		return command;
+	}
+
+	public void setCommand(String command) {
+		this.command = command;
 	}
 
 	public List<FileRequest> getFiles() {
@@ -629,6 +679,14 @@ class PiiEntityRequest {
 		this.end = end;
 	}
 
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
 	public Boolean getIsSensitive() {
 		return isSensitive;
 	}
@@ -643,13 +701,5 @@ class PiiEntityRequest {
 
 	public void setAnalysis(String analysis) {
 		this.analysis = analysis;
-	}
-
-	public Boolean getIsDeleted() {
-		return isDeleted;
-	}
-
-	public void setIsDeleted(Boolean isDeleted) {
-		this.isDeleted = isDeleted;
 	}
 }
