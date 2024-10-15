@@ -1,8 +1,9 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: piics
-  namespace: genai-ns
+  name: pii-report-exporter-cs
+  namespace: genai
 spec:
   replicas: 1
   selector:
@@ -15,17 +16,17 @@ spec:
     spec:
       containers:
       - name: piics
-        image: <your-docker-image-name>
+        image: genai-docker-dev.repo.sc.eng.hitachivantara.com/pii-report-exporter:v1
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
----
 
+---
 apiVersion: v1
 kind: Service
 metadata:
-  name: piics-svc
-  namespace: genai-ns
+  name: pii-report-exporter-cs
+  namespace: genai
 spec:
   selector:
     app: piics
@@ -34,3 +35,21 @@ spec:
     port: 8080
     targetPort: 8080
   type: LoadBalancer
+
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: pii-report-exporter-cs
+  namespace: genai
+spec:
+  gateways:
+    - istio-system/https-gateway
+  hosts:
+    - pii-report-exporter-cs.genai.sc.eng.hitachivantara.com
+  http:
+    - route:
+        - destination:
+            host: pii-report-exporter-cs
+            port:
+              number: 8080
