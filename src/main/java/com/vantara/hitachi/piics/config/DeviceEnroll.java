@@ -110,11 +110,11 @@ public class DeviceEnroll {
 		DeviceEnroll.THING_NAME = thingName;
 	}
 
-	public static Boolean getCreatedDeviceEnrollment() {
+	public static boolean getCreatedDeviceEnrollment() {
 		return createdDeviceEnrollment;
 	}
 
-	public static void setCreatedDeviceEnrollment(Boolean createdDeviceEnrollment) {
+	public static void setCreatedDeviceEnrollment(boolean createdDeviceEnrollment) {
 		DeviceEnroll.createdDeviceEnrollment = createdDeviceEnrollment;
 	}
 }

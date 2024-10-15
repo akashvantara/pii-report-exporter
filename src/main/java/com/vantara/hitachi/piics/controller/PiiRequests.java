@@ -1,8 +1,5 @@
 package com.vantara.hitachi.piics.controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 // Imported libs
 import com.hv.pc.dto.performance.MetricsReq;
-import com.hv.pc.utils.DateUtils;
 import com.vantara.hitachi.piics.config.ApplicationConfig;
 
 // Entities
