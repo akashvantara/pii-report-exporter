@@ -21,7 +21,7 @@ import com.vantara.hitachi.piics.entities.ZipMetricsRequest;
 
 import java.io.IOException;
 
-import com.vantara.hitachi.piics.config.DeviceEnroll;;
+import com.vantara.hitachi.piics.config.DeviceEnroll;
 
 public class DataSender {
 	private static final Logger logger = Logger.getLogger(DataSender.class.toString());

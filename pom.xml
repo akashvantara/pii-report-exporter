@@ -35,6 +35,12 @@
 		<groupId>com.hv.pc</groupId>
 		<artifactId>pulse-connect</artifactId>
 		<version>v7</version>
+		<exclusions>
+			<exclusion>
+				<groupId>commons-logging</groupId>
+				<artifactId>commons-logging</artifactId>
+			</exclusion>
+		</exclusions>
 	</dependency>
 	<dependency>
 		<groupId>org.springframework.boot</groupId>
