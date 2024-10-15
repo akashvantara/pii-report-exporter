@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: piics
-        image: genai-docker-dev.repo.sc.eng.hitachivantara.com/pii-report-exporter:v1
+        image: genai-docker-dev.repo.sc.eng.hitachivantara.com/pii-report-exporter:v2
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
