@@ -17,6 +17,10 @@ spec:
       containers:
       - name: piics
         image: genai-docker-dev.repo.sc.eng.hitachivantara.com/pii-report-exporter:v2
+        command:
+          - "java"
+          - "-jar"
+          - "piics-0.0.1-SNAPSHOT.jar"
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
