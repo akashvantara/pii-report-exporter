@@ -56,8 +56,21 @@ public class DataSender {
 			logger.info("Initializing pulse mqtt metrics service!");
 			this.mqttMetricsService = new MqttMetricsImpl(this.pulseMqttConnection.getConnection());
 			logger.info("Pulse mqtt metrics service initialized!");
-		} catch (ExecutionException | InterruptedException ee) {
+
+			String channelName = DataSender.thingName;
+			logger.info("subscribing to metrics channel " + channelName + "!");
+			this.mqttMetricsService.subscribeMqttMetrics(DataSender.thingName,
+					DataSender.enrollmentRequest);
+			logger.info("subscribed to metrics channel " + channelName + "!");
+		} catch (ExecutionException ee) {
 			logger.log(Level.SEVERE, "Could not initialize the mqtt service, error: " + ee);
+		} catch (InterruptedException ie) {
+			this.pulseMqttConnection.disconnect();
+
+			logger.log(Level.SEVERE, "Could not wait for messages from MQTT, error: " +
+					ie);
+
+			Thread.currentThread().interrupt();
 		}
 
 		// Add a mechanism to close the connection gracefully when done
@@ -102,28 +115,18 @@ public class DataSender {
 	public boolean publishDataToMqtt(MetricsReq request) {
 		boolean success = false;
 		try {
-			logger.info("subscribing to metrics channel");
-			this.mqttMetricsService.subscribeMqttMetrics(DataSender.thingName,
-					DataSender.enrollmentRequest);
+			// logger.info("subscribing to metrics channel");
+			// this.mqttMetricsService.subscribeMqttMetrics(DataSender.thingName,
+			// DataSender.enrollmentRequest);
 
 			logger.info("publishing to metrics channel");
 			this.mqttMetricsService.publishMqttMetrics(request, DataSender.thingName,
 					DataSender.enrollmentRequest);
 
 			success = true;
-		} catch (ExecutionException ee) {
-			logger.log(Level.SEVERE, "Failed to create MQTT connection or subscription, error: " + ee);
 		} catch (PulseException pe) {
 			logger.log(Level.SEVERE, "Got PulseException while trying to push metrics to topic: " + pe);
-		} catch (InterruptedException e) {
-			logger.log(Level.SEVERE, "Could not wait for messages from MQTT, error: " + e);
-			logger.log(Level.WARNING, "Disconnecting MQTT client since error occured");
-			this.pulseMqttConnection.disconnect();
-
-			// Restore interrupted state...
-			Thread.currentThread().interrupt();
 		}
-
 		return success;
 	}
 
